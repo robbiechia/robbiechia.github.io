@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robbie Chia — Data Science Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <span class="nav-brand" data-tab="home">Robbie Chia</span>
+
+    <div class="nav-center">
+      <button class="nav-tab active" data-tab="home">Home</button>
+      <button class="nav-tab" data-tab="projects">Projects</button>
+      <button class="nav-tab" data-tab="about">About</button>
+      <button class="nav-tab" data-tab="cv">CV</button>
+    </div>
+
+    <div class="nav-social">
+      <a href="https://github.com/robbiechia" target="_blank" rel="noopener" aria-label="GitHub" class="social-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/robbie-chia" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 0H5C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5V5c0-2.761-2.238-5-5-5zM8 19H5V8h3v11zM6.5 6.732c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zM20 19h-3v-5.604c0-3.368-4-3.113-4 0V19h-3V8h3v1.765c1.396-2.586 7-2.777 7 2.476V19z"/>
+        </svg>
+      </a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ===== HOME ===== -->
+    <section id="home" class="tab-content active">
+
+      <div class="hero">
+        <p class="hero-greeting">Hi, I'm</p>
+        <h1 class="hero-name">Robbie Chia</h1>
+        <p class="hero-title">Data Science &amp; Analytics Student</p>
+        <p class="hero-bio">
+          I'm passionate about turning raw data into meaningful insights.
+          Studying Data Science and Analytics, I enjoy building machine learning
+          models, crafting visualisations, and solving real-world problems with data.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" data-tab="projects">View Projects</button>
+          <button class="btn-secondary" data-tab="about">About Me</button>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="home-projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-icon">&#9674;</span>
+              <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+            </div>
+            <h3>Customer Churn Prediction</h3>
+            <p>Classification model using logistic regression and random forests to predict customer churn, achieving 89% accuracy and a ROC-AUC of 0.94.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Scikit-learn</span>
+              <span class="tag">Pandas</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-icon">&#9674;</span>
+              <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+            </div>
+            <h3>Sales Forecasting with Time Series</h3>
+            <p>ARIMA and Prophet forecasting pipeline for retail sales data. Reduced forecast error by 23% against a naive baseline.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Prophet</span>
+              <span class="tag">Time Series</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-icon">&#9674;</span>
+              <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+            </div>
+            <h3>NLP Sentiment Analysis</h3>
+            <p>Fine-tuned BERT for sentiment classification on product reviews, achieving 92% F1-score — an 8% improvement over a TF-IDF + SVM baseline.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">NLP</span>
+              <span class="tag">HuggingFace</span>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-card-header">
+              <span class="project-icon">&#9674;</span>
+              <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+            </div>
+            <h3>Interactive Data Dashboard</h3>
+            <p>Plotly Dash dashboard visualising COVID-19 trends with animated choropleth maps and customisable filters for deep data exploration.</p>
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Dash</span>
+              <span class="tag">Plotly</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects" class="tab-content">
+      <div class="page-header">
+        <h1>Projects</h1>
+        <p>A collection of data science and analytics work</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-icon">&#9674;</span>
+            <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+          </div>
+          <h3>Customer Churn Prediction</h3>
+          <p>
+            Built classification models (logistic regression, random forest) to predict
+            customer churn. Performed feature engineering, hyperparameter tuning via grid
+            search, and model selection using stratified cross-validation.
+            Achieved 89% accuracy and ROC-AUC of 0.94 on held-out test data.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Scikit-learn</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Machine Learning</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-icon">&#9674;</span>
+            <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+          </div>
+          <h3>Sales Forecasting with Time Series</h3>
+          <p>
+            Developed an ARIMA and Prophet-based forecasting pipeline for retail sales data.
+            Conducted stationarity testing, seasonal decomposition, and model diagnostics.
+            Reduced forecast MAPE by 23% compared to a seasonal naive baseline.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Prophet</span>
+            <span class="tag">Statsmodels</span>
+            <span class="tag">Time Series</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-icon">&#9674;</span>
+            <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+          </div>
+          <h3>NLP Sentiment Analysis</h3>
+          <p>
+            Fine-tuned a pre-trained BERT model for sentiment classification on product
+            reviews. Benchmarked against a TF-IDF + SVM baseline. BERT achieved a
+            92% F1-score — an 8 percentage-point improvement.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">HuggingFace</span>
+            <span class="tag">PyTorch</span>
+            <span class="tag">NLP</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <span class="project-icon">&#9674;</span>
+            <a href="https://github.com/robbiechia" target="_blank" class="project-link" aria-label="View on GitHub">&#8599;</a>
+          </div>
+          <h3>Interactive Data Dashboard</h3>
+          <p>
+            Created a Plotly Dash dashboard to visualise COVID-19 global trends.
+            Features include animated choropleth maps, time-series charts, and
+            customisable country/metric filters for in-depth data exploration.
+          </p>
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Dash</span>
+            <span class="tag">Plotly</span>
+            <span class="tag">Data Visualisation</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="tab-content">
+      <div class="page-header">
+        <h1>About Me</h1>
+      </div>
+
+      <div class="about-grid">
+
+        <div class="about-bio">
+          <h2>Background</h2>
+          <p>
+            I'm Robbie Chia, a Data Science &amp; Analytics student with a keen interest in
+            machine learning, statistical modelling, and data visualisation. I enjoy working
+            at the intersection of rigorous quantitative analysis and practical problem-solving.
+          </p>
+          <p>
+            Outside of data, I enjoy [your hobbies / interests]. I'm always looking for
+            opportunities to apply data science to domains I care about.
+          </p>
+
+          <h2>Education</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">2023 — Present</div>
+              <div class="timeline-content">
+                <h3>B.Sc. Data Science &amp; Analytics</h3>
+                <p>Your University &middot; Expected Graduation 2026</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2023</div>
+              <div class="timeline-content">
+                <h3>Prior Qualification / High School</h3>
+                <p>Institution &middot; Location</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-skills">
+          <h2>Skills</h2>
+
+          <div class="skills-group">
+            <h4>Languages</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">R</span>
+              <span class="skill-tag">SQL</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <h4>Libraries &amp; Frameworks</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">Pandas</span>
+              <span class="skill-tag">NumPy</span>
+              <span class="skill-tag">Scikit-learn</span>
+              <span class="skill-tag">TensorFlow</span>
+              <span class="skill-tag">PyTorch</span>
+              <span class="skill-tag">Matplotlib</span>
+              <span class="skill-tag">Seaborn</span>
+              <span class="skill-tag">Plotly</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <h4>Tools &amp; Platforms</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">Jupyter</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">Tableau</span>
+              <span class="skill-tag">Power BI</span>
+              <span class="skill-tag">AWS</span>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <h4>Techniques</h4>
+            <div class="skill-tags">
+              <span class="skill-tag">Machine Learning</span>
+              <span class="skill-tag">Deep Learning</span>
+              <span class="skill-tag">NLP</span>
+              <span class="skill-tag">Time Series</span>
+              <span class="skill-tag">Statistical Analysis</span>
+              <span class="skill-tag">Data Visualisation</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== CV ===== -->
+    <section id="cv" class="tab-content">
+      <div class="cv-actions">
+        <a href="cv.pdf" download class="btn-primary">&#8595; Download PDF</a>
+      </div>
+
+      <div class="cv-container">
+        <div class="cv-header">
+          <h1>Robbie Chia</h1>
+          <div class="cv-contact">
+            <span>robbiechia@email.com</span>
+            <span>&middot;</span>
+            <span>github.com/robbiechia</span>
+            <span>&middot;</span>
+            <span>linkedin.com/in/robbie-chia</span>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>Education</h2>
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <strong>B.Sc. Data Science &amp; Analytics</strong>
+              <span>2023 — Present</span>
+            </div>
+            <p>Your University &middot; Expected Graduation 2026</p>
+            <p>Relevant coursework: Machine Learning, Statistical Computing, Database Systems, Data Mining, Visualisation</p>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>Projects</h2>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <strong>Customer Churn Prediction</strong>
+              <span>2024</span>
+            </div>
+            <ul>
+              <li>Built classification models (logistic regression, random forest) to predict customer churn</li>
+              <li>Achieved 89% accuracy and ROC-AUC of 0.94 through feature engineering and hyperparameter tuning</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <strong>Sales Forecasting with Time Series</strong>
+              <span>2024</span>
+            </div>
+            <ul>
+              <li>Developed ARIMA and Prophet forecasting pipeline for retail sales data</li>
+              <li>Reduced forecast MAPE by 23% compared to a seasonal naive baseline</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <strong>NLP Sentiment Analysis</strong>
+              <span>2023</span>
+            </div>
+            <ul>
+              <li>Fine-tuned BERT for product review sentiment classification; 92% F1-score</li>
+              <li>8 percentage-point improvement over TF-IDF + SVM baseline</li>
+            </ul>
+          </div>
+
+          <div class="cv-entry">
+            <div class="cv-entry-header">
+              <strong>Interactive Data Dashboard</strong>
+              <span>2023</span>
+            </div>
+            <ul>
+              <li>Built a Plotly Dash dashboard visualising COVID-19 global trends</li>
+              <li>Includes animated choropleth maps, time-series charts, and customisable filters</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>Skills</h2>
+          <div class="cv-skills">
+            <div class="cv-skill-row">
+              <strong>Languages</strong>
+              <span>Python, R, SQL</span>
+            </div>
+            <div class="cv-skill-row">
+              <strong>Libraries</strong>
+              <span>Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch, Matplotlib, Plotly</span>
+            </div>
+            <div class="cv-skill-row">
+              <strong>Tools</strong>
+              <span>Jupyter, Git, Tableau, Power BI</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Robbie Chia</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
