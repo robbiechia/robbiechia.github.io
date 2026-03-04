@@ -14,17 +14,23 @@ const CV = {
   resumeUrl: 'Robbie_Chia_Yuan_Ee_Resume.pdf',
 
   // Short professional tagline shown at the top of the CV page
-  tagline: 'Data Science & Analytics student with a passion for machine learning, statistical modelling, and turning data into clear, actionable insight.',
+  tagline: 'I\'m a graduating Data Science & Analytics student with a passion for machine learning, statistical modelling, and turning data into clear, actionable insight.',
 
   // ── Education ──────────────────────────────────────────────
   education: [
     {
       degree:      'B.Sc. Data Science & Analytics',
-      institution: 'Your University',
-      period:      '2023 — Present',
+      institution: 'National University of Singapore',
+      period:      '2022 — Present',
       expected:    'Expected Graduation: 2026',
-      details:     'Relevant coursework: Machine Learning, Statistical Computing, Database Systems, Data Mining, Data Visualisation, Linear Algebra, Probability & Statistics',
+      details:     'Relevant coursework: Machine Learning, Statistical Computing, Database Systems, Data Mining, Data Visualisation, Linear Algebra, Probability & Statistics, Data Algorithms & Structures',
     },
+    {
+      degree:      'Exchange Semester',
+      institution: 'University of Waterloo',
+      period:      'Jan 2025 - May 2025',
+      details:     'Relevant coursework: Algorithm Design & Data Abstraction, Advance Calculus & Discrete Mathematics, Applied Linear Models',
+    }
     // Add more entries as needed:
     // {
     //   degree:      'Prior Qualification / A-Levels',
@@ -39,6 +45,27 @@ const CV = {
   // Leave as an empty array [] if you have no experience yet.
   // The section will be hidden automatically.
   experience: [
+    {
+      role:    'Data Analyst Intern',
+      company: 'Auristone Pte Ltd',
+      period:  'May 2024 - Dec 2024',
+      bullets: [
+        'Designed and productionised an end-to-end RNA-seq ETL and statistical analysis pipeline in R, standardising preprocessing, normalisation, statistical analyses and differential expression workflows across experiments',
+        'Formulated and tested statistical hypotheses on treatment–control gene expression differences using EDA, clustering and distributional analysis to identify biologically significant patterns',
+        'Implemented quality control and concordance validation using correlation metrics and outlier detection to detect data inconsistencies and prevent propagation of experimental artefacts into downstream modelling',
+        'Engineered scalable data extraction workflows using MinIO object storage to support repeated modelling experiments on shared high-volume datasets'
+      ],
+    },
+    {
+      role:    'Operations & Analytics Officer',
+      company: 'Republic of Singapore Air Force (RSAF)',
+      period:  'Apr 2021 — May 2022',
+      bullets: [
+        'Reduced reporting cycles by 60% by designing and automating Power BI dashboards tracking operational KPIs, enabling leadership to monitor trends, identify anomalies and support data-informed decision-making',
+        'Analysed 1,000+ personnel records to identify compliance gaps and surface anomalies',
+        'Led digitalisation of manpower tracking using NFC systems and AWS S3, reducing manual logging efforts and improving data reliability'
+      ],
+    }
     // {
     //   role:    'Data Analyst Intern',
     //   company: 'Company Name',
@@ -54,19 +81,22 @@ const CV = {
   // Each key is a category heading; each value is an array of skill tags.
   skills: {
     'Languages': [
-      'Python', 'R', 'SQL',
+      'Python', 'R', 'SQL', 'PostgreSQL', 'Familiar with Java and C',
     ],
     'Libraries & Frameworks': [
       'Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch',
-      'HuggingFace Transformers', 'Matplotlib', 'Seaborn', 'Plotly', 'Dash',
+      'Matplotlib', 'Seaborn', 'Plotly',
     ],
     'Tools & Platforms': [
-      'Jupyter', 'Git & GitHub', 'Tableau', 'Power BI',
+      'Jupyter', 'Git & GitHub', 'Power BI', 'Docker'
     ],
     'Techniques': [
       'Machine Learning', 'Deep Learning', 'Natural Language Processing',
       'Time Series Analysis', 'Statistical Modelling',
       'Data Visualisation', 'Exploratory Data Analysis',
+    ],
+    'Spoken Languages': [
+      'English', 'Mandarin'
     ],
   },
 

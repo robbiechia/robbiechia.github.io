@@ -25,6 +25,18 @@ function formatProse(str) {
     .join('');
 }
 
+// Renders an array that may contain plain-text items (→ <li> in <ol>)
+// or raw HTML blocks like <figure> (→ appended after the </ol>).
+// This keeps numbered list ordering intact while allowing images in the section.
+function renderMixedList(items) {
+  const listItems = items.filter(item => !item.trim().startsWith('<'));
+  const htmlBlocks = items.filter(item => item.trim().startsWith('<'));
+  const ol = listItems.length
+    ? `<ol>${listItems.map(i => `<li>${formatBold(i)}</li>`).join('')}</ol>`
+    : '';
+  return ol + htmlBlocks.join('');
+}
+
 // ── Tab switching ─────────────────────────────────────────────
 
 const navTabs  = document.querySelectorAll('.nav-tab');
@@ -69,15 +81,8 @@ function buildProjectCard(project, onClick) {
          <img src="${project.image}" alt="${project.title}" loading="lazy" />
        </div>`
     : `<div class="card-img">
-         <div class="card-img-placeholder">&#9674; &#9674; &#9674;</div>
+         <div class="card-img-placeholder"></div>
        </div>`;
-
-  // ── GitHub link ───────────────────────────────────────────
-  const ghLink = project.github
-    ? `<a href="${project.github}" target="_blank" rel="noopener"
-          class="project-link" aria-label="View on GitHub"
-          onclick="event.stopPropagation()">&#8599;</a>`
-    : '';
 
   // ── "Read writeup" CTA (only when card is clickable) ─────
   const ctaHtml = onClick
@@ -86,10 +91,6 @@ function buildProjectCard(project, onClick) {
 
   card.innerHTML = `
     ${imgHtml}
-    <div class="project-card-header">
-      <span class="project-icon">&#9674;</span>
-      ${ghLink}
-    </div>
     <h3>${project.title}</h3>
     <p>${project.summary}</p>
     <div class="project-tags">
@@ -146,20 +147,24 @@ function openProjectDetail(id) {
        </div>`
     : '';
 
-  // ── GitHub button ─────────────────────────────────────────
+  // ── Action buttons (GitHub + Live Demo) ──────────────────
   const ghButton = project.github
     ? `<a href="${project.github}" target="_blank" rel="noopener"
-          class="btn-secondary detail-github">View on GitHub &#8599;</a>`
+          class="btn-secondary detail-github">GitHub &#8599;</a>`
     : '';
 
-  // ── Writeup sections ──────────────────────────────────────
-  const objectivesHtml = `<ol>
-    ${project.objectives.map(obj => `<li>${formatBold(obj)}</li>`).join('')}
-  </ol>`;
+  const liveButton = project.liveUrl
+    ? `<a href="${project.liveUrl}" target="_blank" rel="noopener"
+          class="btn-primary detail-github">Live Demo &#8599;</a>`
+    : '';
 
-  const howItWorksHtml = `<ol>
-    ${project.howItWorks.map(step => `<li>${formatBold(step)}</li>`).join('')}
-  </ol>`;
+  // ── Dynamic sections (per-project structure) ──────────────
+  const sectionsHtml = project.sections.map(s => `
+    <div class="detail-section">
+      <h2>${s.label}</h2>
+      ${s.type === 'list' ? renderMixedList(s.content) : formatProse(s.content)}
+    </div>
+  `).join('');
 
   const toolsHtml = `<div class="project-tags">
     ${project.tools.map(t => `<span class="skill-tag">${t}</span>`).join('')}
@@ -171,11 +176,15 @@ function openProjectDetail(id) {
     <div class="detail-header">
       <div>
         <h1>${project.title}</h1>
+        ${project.period ? `<p class="detail-period">${project.period}</p>` : ''}
         <div class="project-tags detail-tags">
           ${project.tags.map(t => `<span class="tag">${t}</span>`).join('')}
         </div>
       </div>
-      ${ghButton}
+      <div class="detail-actions">
+        ${liveButton}
+        ${ghButton}
+      </div>
     </div>
 
     ${featuredImgHtml}
@@ -186,30 +195,7 @@ function openProjectDetail(id) {
         ${formatProse(project.overview)}
       </div>
 
-      <div class="detail-section">
-        <h2>Objectives</h2>
-        ${objectivesHtml}
-      </div>
-
-      <div class="detail-section">
-        <h2>Thought Process</h2>
-        ${formatProse(project.thoughtProcess)}
-      </div>
-
-      <div class="detail-section">
-        <h2>How It Works</h2>
-        ${howItWorksHtml}
-      </div>
-
-      <div class="detail-section">
-        <h2>Challenges Faced</h2>
-        ${formatProse(project.challenges)}
-      </div>
-
-      <div class="detail-section">
-        <h2>Reflections</h2>
-        ${formatProse(project.reflections)}
-      </div>
+      ${sectionsHtml}
 
       <div class="detail-section">
         <h2>Technical Tools</h2>
@@ -290,7 +276,7 @@ function renderCV() {
         <h1>Background &amp; Capabilities</h1>
         <p class="cv-tagline">${CV.tagline}</p>
       </div>
-      <a href="${CV.resumeUrl}" download class="btn-primary cv-download-btn">&#8595;&nbsp; Download Resume</a>
+      <a href="${CV.resumeUrl}" download class="btn-primary cv-download-btn">&#8595;&nbsp; My Resume</a>
     </div>
 
     <div class="cv-block">
