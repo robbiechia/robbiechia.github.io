@@ -249,7 +249,7 @@ Domain knowledge shaped implementation: understanding the practical implications
   <figcaption>Route visualisation: optimised paths from a Kansas City hub to customer clusters, grouped by zone density and warehouse proximity.</figcaption>
 </figure>
 
-**Power BI dashboard** — two-page interactive dashboard for non-technical stakeholders with drill-through filters (date, shipping mode, supplier). E.g overall on-time delivery rate: **45.2%** across 171,962 deliveries. Counterintuitive finding: Same Day shipping had the worst on-time rate, directly informing fulfilment recommendations.
+**Power BI dashboard** — interactive dashboard for non-technical stakeholders with drill-through filters (date, shipping mode, supplier). E.g overall on-time delivery rate: **45.2%** across 171,962 deliveries. Counterintuitive finding: Same Day shipping had the worst on-time rate, directly informing fulfilment recommendations.
 
 <figure class="writeup-figure">
   <img src="images/e-commerce-optimisation/dashboard1.jpg" alt="Supplier Performance Power BI dashboard" />
