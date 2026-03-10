@@ -84,8 +84,8 @@ const CV = {
       'Python', 'R', 'SQL', 'PostgreSQL', 'Familiar with Java and C',
     ],
     'Libraries & Frameworks': [
-      'Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch',
-      'Matplotlib', 'Seaborn', 'Plotly',
+      'Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow', 'PyTorch', 'JAX', 'SciPy',
+      'Matplotlib', 'Seaborn', 'Plotly', 'GGPlot2'
     ],
     'Tools & Platforms': [
       'Jupyter', 'Git & GitHub', 'Power BI', 'Docker'
@@ -94,6 +94,8 @@ const CV = {
       'Machine Learning', 'Deep Learning', 'Natural Language Processing',
       'Time Series Analysis', 'Statistical Modelling',
       'Data Visualisation', 'Exploratory Data Analysis',
+      'Data Cleaning & Preprocessing', 'Feature Engineering',
+      'Model Evaluation & Validation', 'ETL Pipeline Design',
     ],
     'Spoken Languages': [
       'English', 'Mandarin'
