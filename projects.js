@@ -50,6 +50,123 @@ const PROJECTS = [
 
   // ── 1 ──────────────────────────────────────────────────────
   {
+    id: 'curriculum-workforce-alignment',
+    title: 'Uni Curriculum–Workforce Alignment',
+    period: 'Jan – Apr 2026',
+    summary: 'Evidence-based pipeline mapping 4,000+ NUS modules to 2,000 Singapore job postings using hybrid retrieval, surfaced through an interactive policy dashboard for MOE officers.',
+    tags: ['NLP', 'BM25', 'Sentence Transformer Embeddings', 'Streamlit', 'Python', 'PostgreSQL'],
+    github: 'https://github.com/arthurchongg/DSA4264-text-group-4',
+    liveUrl: 'https://curriculum-workforce-alignment.streamlit.app/',
+    image: 'images/uni-curriculum-alignment/cover_image.jpg',
+
+    overview: `How well do university degrees prepare graduates for the real job market? Beyond employment surveys, this project utilises NLP to quantify alignment and highlight gaps between university taught content and job requirements.
+
+    The project was scoped to early-career, degree-level roles (≤2 years experience) to reflect the entry-level graduate context. Through this project, we built a data pipeline to ingest uni curriculum data and job postings, applied a hybrid BM25 + sentence embedding retrieval system to generate module-job scores,
+
+    which are further aggregated to access degrees as a whole. Results are showcased through a dashboard designed for MOE policy officers to inform curriculum planning based on evidence.`,
+
+    sections: [
+      {
+        label: 'Workflow',
+        type: 'list',
+        content: [
+          '**Data ingestion**: Pulled job postings from MyCareersFuture (collected over a one-week window, 25–31 Jan 2026) and module metadata from the NUSMods API (AY2024–25 snapshot); normalised and loaded into PostgreSQL (Supabase) as canonical tables. SkillsFuture Skills Framework and SSOC 2024 occupational codes were ingested as reference tables for skill normalisation and role labelling.',
+          '**Filtering**: Retained only degree-level (SSEC=70), early-career (≤2 years experience) roles — reducing 22,720 raw postings to 1,994 relevant jobs to keep the analysis policy-relevant to fresh graduates.',
+          '**Role family assignment**: Mapped each job to one of 18 curated role families based on Skillsfuture SSOC categories, with a deterministic fallback.',
+          '**Skill taxonomy**: Applied the SkillsFuture Skills Framework to split skills into technical and soft channels; unmapped terms were kept via alias normalisation and a heuristic channel fallback.',
+          '**Module variant consolidation**: Normalised module codes (e.g. ACC1701A/B/C/D → ACC1701) and unioned skill lists across suffix variants, reducing 4,176 raw modules to 3,752 consolidated entries. This prevents score fragmentation and keeps retrieval and degree-mapping outputs aligned to a single module key.',
+          '**Hybrid retrieval scoring**: For each module, retrieved top-50 matching jobs using BM25 (k₁=1.2, b=0.75) and sentence embeddings (all-MiniLM-L6-v2, 384-dim), fused via Reciprocal Rank Fusion (rrf_k=60). Thresholding was intentionally asymmetric: BM25 is moderately filtered to suppress lexical noise, while embedding candidates are kept broad so semantically valid matches expressed with different wording remain in the pool. Generated 750,400 module–job evidence rows.',
+          '**Scoring Validation**: Validated the retrieval pipeline through human evaluation of 200 modules x 20 jobs (randomly sampled from each ranker), labelled on a 4-point relevance scale. ',
+          '**Support weighting**: Applied a shrinkage formula — support_weight = n / (n + 5) — equivalent to adding five pseudo-evidence jobs before trusting a role score. This dampens overconfident conclusions from role families with sparse evidence while letting well-evidenced families converge toward full weight.',
+          '**Degree aggregation**: Each degree is decomposed into requirement buckets (core, faculty, major, elective). Each bucket is expanded to concrete module codes, and each module\'s skill contribution is credit-adjusted: skill_weight = module_credits / bucket_module_count. Supply scores are then normalised by the degree\'s total required credits, yielding a degree-normalised estimate of skill coverage. Expanded to 301,428 rows across 72 programmes.',
+          '**Dashboard deployment**: Designned and built a streamlit dashboard to surface results and highlight exact skill gaps per degree and role family. An LLM-powered query assistant was created to allow policy officers to input natural language job queries and see matching jobs and relevant modules — bridging the gap between raw data and actionable insights for curriculum planning.',
+        ],
+      },
+      {
+        label: 'Results',
+        type: 'prose',
+        content: `**Firstly, since retrieval evaluation** was conducted without external ground truth, we randomly sampled 200 modules and retrieved the top-20 jobs per module from each of three rankers (Hybrid, BM25-only, Embedding-only) as a labelling set for validation. We manually labelled each module-job pair on a 4-point ordinal scale to measure closeness of match and utilised nDCG@10 as the primary metric, appropriate for a ranked retrieval task with graded labels where decision-makers focus on top results. The **Hybrid ranker achieved nDCG@10 = 0.657**, ahead of Embedding-only (0.640) and BM25-only (0.554), with mean Precision@10 = 0.353 and Recall@10 = 0.350. This confirms that combining lexical precision with semantic breadth improves top-rank quality over either channel alone. All results can be observed on the demo of our dashboard, but I will go through some observable key results here.
+
+**First layer of analysis:Module-Role family alignment.** The pipeline scored 3,752 modules, each assigned to its highest-scoring role family.
+
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/module_score_distribution_by_role.png" alt="Box plot of module alignment score distribution by primary role family" />
+  <figcaption>Module score distribution by primary role family (each module counted once at its highest-scoring role). Sorted by median score descending; n values show module count per family.</figcaption>
+</figure>
+
+From the boxplots, each job family has its unique spread of module alignment scores, where one can see if skills are appropriately taught on average. For example, **Accounting/Audit/Tax** sits highest with a median around 0.50 and IQR extending past 0.60 (n=35) where accounting module vocabulary maps directly and explicitly to job language. **Education/Training** (n=1,188) is an outlier in a different way: by far the largest family, with a long right tail of extreme outliers. A large fraction of the NUS catalogue incidentally matches training-sector job language through learning-objective phrasing in module descriptions, even for modules unrelated to teaching careers.
+
+**Second layer of analysis:Degree-level readiness.**
+
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/degree_readiness_scatter.png" alt="Scatter plot of per-degree skill coverage vs job market coverage" />
+  <figcaption>Per-degree readiness: skill coverage (% of top-50 demanded skills in required curriculum) vs. job market coverage (% of 1,994 entry-level jobs supported at RRF > 0.3). Dashed lines mark approximate medians across all degrees.</figcaption>
+</figure>
+
+Most degrees cluster between 75–90% job market coverage and almost all NUS programmes have modules that retrieve broadly against entry-level jobs. Skill coverage is where degrees diverge. SOC degrees dominate the upper-right, BIZ degrees form a right side cluster, CHS and MED degrees sit in the lower-left and LAW is an isolated point. This reflects the differences in demand for each degree\'s skill set in the market as well as how appropriately each curriculum teaches it.
+
+**Dive into the degree-level:Common curriculum baseline.**
+
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/common_curriculum_violin.png" alt="Violin plot of GE module alignment score distribution by role family" />
+  <figcaption>Score distribution of 223 GE / common-curriculum modules against each role family. Violin width shows density of modules at that score. This serves as the baseline contribution from GE requirements — any degree score above this comes from faculty and major modules.</figcaption>
+</figure>
+
+Each degree contains a compulsory common curriculum component which takes up a significant amount of module space for students. Through the violin plots, compulsory modules seem to prepare students for **Education/Training** jobs more, possibly because learning-objective phrasing resembles training-sector job postings and prepare soft skills for that area. Whereas it is seemingly redundant for roles in **Cybersecurity, Cloud/DevOps/ and Mechanical/M&E** where there is essentially no technical signals for these specialist families. Therefore, for niche sectors, it highlights to policy offers to consider the extent to which common curriculum should be carefully designed or less necessitated for better preparation for their roles.
+
+**Dive into the degree-level: Primary major readiness (BIZ as an example)**
+
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/primary_major_heatmap_BIZ.png" alt="Heatmap of BIZ primary major readiness by role family" />
+  <figcaption>Primary major readiness heatmap for BIZ (9 degrees) — mean alignment score of core non-GE required modules per degree × role family. Darker cells indicate stronger retrieval evidence from required modules for that role cluster.</figcaption>
+</figure>
+
+We also generated heatmaps to identify if primary major modules contribute significantly to role-family alignment (They are expected to, else it means your core modules aren't particularly useful!). For BIZ, the heatmap reveals a clear diagonal structure where each degree aligns most strongly with its natural occupational counterpart. For example, BBA-IS (Information Systems) aligns most with Cloud/DevOps/AI roles, BBA-Finance with Banking/Finance, and BBA-Marketing with Marketing/Sales. This suggests that the major-specific curriculum is effectively teaching skills relevant to their target job families, which is a positive signal for curriculum design. However, some cross-family alignment is observed (e.g. BBA-Finance also showing moderate alignment with Consulting/Strategy), which may reflect transferable skills or interdisciplinary content.`,
+      },
+      {
+        label: 'Key Features (Dashboard)',
+        type: 'list',
+        content: [
+          '**Curriculum Readiness page**: Degree-level bar plots to access major x role-family alignment scores across its primary major requirements and common curriculum requirements. It also highlights possible modules outside of the existing curriculum that perform well for that role-family, to consider if its worthwhile including them or recommending as electives.',
+          `**Skill Gap View**: Supply-demand delta tables per degree and role family, backed by the SkillsFuture taxonomy — showing both which skills are missing and how large the gap is.
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/skill_gap.jpg" alt="Skill supply-demand gap table by role family" />
+  <figcaption>Skill supply-demand gap table: employer demand signal vs. module supply score. Larger deltas flag where the curriculum consistently leaves employer-demanded skills uncovered.</figcaption>
+</figure>`,
+          `**Career Query Assistant**: Natural-language job search (e.g. "entry level data analyst with Python and SQL") that returns matching job postings and the NUS modules most relevant to those roles — designed for career counsellors advising students.
+<figure class="writeup-figure">
+  <img src="images/uni-curriculum-alignment/llm_query_bot.jpg" alt="Career Query Assistant with a sample natural-language job search" />
+  <figcaption>Career Query Assistant: a natural-language query surfaces matching jobs and the modules most relevant to those roles — bridging job market data and curriculum planning.</figcaption>
+</figure>`,
+        ],
+      },
+      {
+        label: 'Challenges Faced',
+        type: 'prose',
+        content: `One big design tension was granularity. SSOC occupation codes are precise and breadth is good for retrieval quality and policy considerations, while depth is good for specificity but harder to generalise for policy implementations. Therefore, we chose a 4digit SSOC level with a deterministic waterfall assignment with 18 role families as a good baseline.
+
+**Data sparsity** was a recurring constraint. After filtering to degree-level, early-career roles, only 1,994 of 22,720 postings remained, which is a 92% reduction. Some role families had very few matching jobs, making raw alignment scores misleading. The support-weighting shrinkage formula was introduced to address this, requiring careful calibration of the prior (settled on 5.0 after ablations).
+
+The **skill inference step** was a big hurdle as NUS module descriptions are written for students, not employers. They rarely name skills explicitly and this is a huge limitation as our controlled vocabulary look up may be limited and more technical capabilities (such as LLM inference) may be required for future work to infer skills from module text.
+
+Finally, **degree-level aggregation** required reconciling NUS's module catalogue with our curated degree plan table. This was rather difficult and required a lot of manual effort that scraping couldn't really do as each degree was vastly different and present information different.`,
+      },
+      {
+        label: 'Reflections',
+        type: 'prose',
+        content: `The project reinforced something easy to underestimate in NLP work: **retrieval systems are only as good as the text they operate on**. Module descriptions written for academic audiences share almost no vocabulary with job descriptions written for HR teams. The hybrid BM25 + embedding approach helped bridge this, but the semantic gap is real. Any future iteration should consider fine-tuning embeddings on education-to-job-description pairs, or augmenting module texts with graduate learning outcomes. In fact, valuable data in the form of module feedback or actual course syllabus are unavailable and only accessible by the universities, therefore tighter collaboration with them will be more meaningful.
+
+Building for a non-technical policy audience forces you to be honest about what your numbers can and can't claim. We don't have a particular band to confident claim that a score is good/bad, and everything is relative in nature. More precise validation will be needed in the future for more absolute thresholds.
+
+On the technical side, the **modular pipeline architecture** paid off. Being able to rerun just the scoring stage without re-ingesting data, or swap retrieval hyperparameters via config, made iteration much faster than a monolithic script would have allowed. Perhaps more NLP scoring methods could've been explored as well for better potential scorings, although for this project we wanted it to be as interpretable and actionable for policy officers as possible.`,
+      },
+    ],
+
+    tools: ['Python', 'Sentence Transformers', 'BM25 / RRF', 'PostgreSQL', 'Supabase', 'Streamlit', 'Plotly', 'SQLAlchemy', 'NLTK', 'Pandas'],
+  },
+
+  // ── 3 ──────────────────────────────────────────────────────
+  {
     id: 'cloud-code',
     title: 'Cloud Code — Hack&Roll 2026',
     period: 'January 2026',
@@ -138,7 +255,7 @@ As my first hackathon project, the experience was invaluable for learning how to
     tools: ['Node.js', 'Express', 'React 18', 'React Flow', 'Firebase / Firestore', 'Firebase Auth', 'JWT', 'OpenAI GPT-4 API', 'Vercel'],
   },
 
-  // ── 2 ──────────────────────────────────────────────────────
+  // ── 4 ──────────────────────────────────────────────────────
   {
     id: 'character-llm',
     title: 'Character-level Transformer',
@@ -200,7 +317,7 @@ The Bayesian search found configurations that manual tuning would not have explo
     tools: ['Python', 'JAX', 'Flax', 'NumPy', 'Optuna (TPE Bayesian search)', 'Pickle', 'Matplotlib'],
   },
 
-  // ── 3 ──────────────────────────────────────────────────────
+  // ── 5 ──────────────────────────────────────────────────────
   {
     id: 'ecommerce-optimisation',
     title: 'E-Commerce Operations Optimisation',
@@ -284,7 +401,7 @@ In retrospect, more advanced forecasting models (ARIMA, Prophet) and stronger op
     tools: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'SQLite', 'Power BI', 'Docker', 'Synthetic Data Vault', 'Matplotlib', 'Seaborn', 'Bash', 'GeoPy'],
   },
 
-  // ── 4 ──────────────────────────────────────────────────────
+  // ── 6 ──────────────────────────────────────────────────────
   {
     id: 'rna-sequencing',
     title: 'RNA Sequencing Analysis Pipeline',
@@ -343,7 +460,7 @@ This project also honed my technical skills in applying statistical concepts to 
     tools: ['Python', 'R', 'Bioconductor libraries', 'Cytoscape', 'GSEA', 'Matplotlib', 'Seaborn'],
   },
 
-  // ── 5 ──────────────────────────────────────────────────────
+  // ── 7 ──────────────────────────────────────────────────────
   {
     id: 'fraud-detection',
     title: 'Fraud Detection in Utility Consumption',
@@ -411,7 +528,7 @@ Per-fold SMOTE discipline was an important methodological takeaway. In subsequen
     tools: ['Python', 'Scikit-learn', 'TensorFlow / Keras', 'imbalanced-learning (SMOTE)', 'Optuna', 'XGBoost', 'LightGBM', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn'],
   },
 
-  // ── 6 ──────────────────────────────────────────────────────
+  // ── 8 ──────────────────────────────────────────────────────
   {
     id: 'sentiment-analysis',
     title: 'Twitter Sentiment Analysis',
