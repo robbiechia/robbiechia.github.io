@@ -37,12 +37,43 @@ function renderMixedList(items) {
   return ol + htmlBlocks.join('');
 }
 
+// ── Hash-based routing ────────────────────────────────────────
+
+let _skipHashChange = false;
+
+function setHash(hash) {
+  _skipHashChange = true;
+  location.hash = hash;
+  setTimeout(() => { _skipHashChange = false; }, 0);
+}
+
+function applyHash() {
+  const hash = location.hash.slice(1);
+  if (!hash || hash === 'home') {
+    switchTab('home', { updateUrl: false });
+  } else if (hash.startsWith('projects/')) {
+    const id = hash.slice('projects/'.length);
+    switchTab('projects', { updateUrl: false });
+    openProjectDetail(id, { updateUrl: false });
+  } else if (['projects', 'about', 'cv'].includes(hash)) {
+    switchTab(hash, { updateUrl: false });
+    if (hash === 'projects') resetProjectsView();
+  } else {
+    switchTab('home', { updateUrl: false });
+  }
+}
+
+window.addEventListener('hashchange', () => {
+  if (_skipHashChange) return;
+  applyHash();
+});
+
 // ── Tab switching ─────────────────────────────────────────────
 
 const navTabs  = document.querySelectorAll('.nav-tab');
 const sections = document.querySelectorAll('.tab-content');
 
-function switchTab(name) {
+function switchTab(name, { updateUrl = true } = {}) {
   navTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   sections.forEach(s => s.classList.toggle('active', s.id === name));
 
@@ -50,6 +81,8 @@ function switchTab(name) {
   if (name !== 'projects') resetProjectsView();
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (updateUrl) setHash(name === 'home' ? '' : name);
 }
 
 navTabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
@@ -136,7 +169,7 @@ function resetProjectsView() {
   document.getElementById('project-detail').classList.add('hidden');
 }
 
-function openProjectDetail(id) {
+function openProjectDetail(id, { updateUrl = true } = {}) {
   const project = PROJECTS.find(p => p.id === id);
   if (!project) return;
 
@@ -208,7 +241,12 @@ function openProjectDetail(id) {
   document.getElementById('project-detail').classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  document.getElementById('back-btn').addEventListener('click', resetProjectsView);
+  if (updateUrl) setHash('projects/' + id);
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    resetProjectsView();
+    setHash('projects');
+  });
 }
 
 // ── CV rendering ──────────────────────────────────────────────
@@ -300,3 +338,4 @@ function renderCV() {
 renderHomeProjects();
 renderProjectsGrid();
 renderCV();
+applyHash();
